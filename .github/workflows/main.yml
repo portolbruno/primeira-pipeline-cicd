@@ -27,11 +27,11 @@ jobs:
           file: ./src/Dockerfile
           push: true
           tags: |
-            bwake/pipeline-actions:${{github.run_number}} 
+            bwake/pipeline-actions:v${{github.run_number}} 
             bwake/pipeline-actions:latest
           #Add the versioning as number of pipeline run will not repeat the version and also addin latest as best practice
 
-          
+
 
   ###passo a passo da construção da imagem e o envio do docker registry
   # 1-autenticar no docker hub docker login
