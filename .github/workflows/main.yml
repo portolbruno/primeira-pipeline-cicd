@@ -53,7 +53,7 @@ jobs:
       - name: Deploy of Manifest
         uses: Azure/k8s-deploy@v5
         with:
-          manifest: |
+          manifests: |
             ./k8s/deployment.yaml
           images: |
             bwake/pipeline-actions:v${{github.run_number}}   
