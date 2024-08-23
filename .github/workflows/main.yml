@@ -19,6 +19,18 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: "Build and push the docker image"
+        uses: docker/build-push-action@v6
+        with:
+          context: ./src
+          file: ./src/Dockerfile
+          push: true
+          tags: |
+            bwake/pipeline-actions:${{github.run_number}} 
+            bwake/pipeline-actions:latest
+          #Add the versioning as number of pipeline run will not repeat the version and also addin latest as best practice
+
           
 
   ###passo a passo da construção da imagem e o envio do docker registry
