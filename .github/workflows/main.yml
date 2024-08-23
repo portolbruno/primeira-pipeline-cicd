@@ -50,5 +50,12 @@ jobs:
         with:
           method: kubeconfig #Can be others as Service-principal, service account
           kubeconfig: ${{ secrets.K8S_CONFIG }} #It is a sensitive document so needs to secret it
-          
+      - name: Deploy of Manifest
+        uses: Azure/k8s-deploy@v5
+        with:
+          manifest: |
+            ./k8s/deployment.yaml
+          images: |
+            bwake/pipeline-actions:v${{github.run_number}}   
+          # Need to check in the manifest (YAML) if the image is the same as this
 
