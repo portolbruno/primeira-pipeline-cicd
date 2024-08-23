@@ -1,43 +1,30 @@
 name: CI-CD
-on: 
+on:
   push:
     branches: ["main"]
   workflow_dispatch:
 jobs:
-  CI:
+  ci:
     runs-on: ubuntu-latest
     steps:
-    - name: Obtendo o código
-      uses: actions/checkout@v4.1.5
-    - name: Autenticação no Docker Hub
-      uses: docker/login-action@v3.1.0
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - name: Build da Imagem Docker
-      uses: docker/build-push-action@v5.3.0
-      with:
-        context: ./src
-        file: ./src/Dockerfile
-        push: true
-        tags: | 
-          fabricioveronez/aula-primeira-pipeline:v${{ github.run_number }} 
-          fabricioveronez/aula-primeira-pipeline:latest 
-  CD:
-    runs-on: ubuntu-latest
-    needs: [CI]
-    steps: 
-    - name: Obtendo o código
-      uses: actions/checkout@v4.1.5
-    - name: Configuração de contexto do Kubernetes
-      uses: azure/k8s-set-context@v4.0.0
-      with:
-        method: kubeconfig
-        kubeconfig: ${{ secrets.K8S_CONFIG }}
-    - name: Execução do Manifesto
-      uses: Azure/k8s-deploy@v5
-      with:
-        manifests: |
-          ./k8s/deployment.yaml
-        images: |
-          fabricioveronez/aula-primeira-pipeline:v${{ github.run_number }}
+      # This Step will take the code from the repository
+      - name: "getting the code" 
+        uses: actions/checkout@v4.1.5 # It is the Action checkout copied from Marketplace
+        #with: in this case it is necessary if the code is in another repository. As we will use the current repository, you do not need to add it.
+        # it is recogniozed automatically as current repo
+
+      # Login the Docker Hub  
+      - name: "Authentication in Docker Hub"
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+
+  ###passo a passo da construção da imagem e o envio do docker registry
+  # 1-autenticar no docker hub docker login
+  # 2-executar o comando de build da imagem
+  # 3-executar o comando para enviar a imagem para o docker hub
+
+
+
